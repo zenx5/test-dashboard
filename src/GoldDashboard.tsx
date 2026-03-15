@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Papa from 'papaparse';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { DollarSign, TrendingUp, Package, BarChart3 } from 'lucide-react';
+import { flow } from './doc/manteco/flujo_caja'
 
 interface Transaction {
   id: string;
@@ -28,9 +29,7 @@ const GoldDashboard: React.FC = () => {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const response = await fetch('/src/doc/manteco/flujo_caja.csv');
-        const csvText = await response.text();
-        const parsed = Papa.parse(csvText, { header: true, skipEmptyLines: true });
+        const parsed = Papa.parse(flow, { header: true, skipEmptyLines: true });
         const data: Transaction[] = (parsed.data as Record<string, string>[]).map((row: Record<string, string>) => ({
           id: row.ID,
           fecha: row.FECHA,
